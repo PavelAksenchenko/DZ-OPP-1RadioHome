@@ -7,18 +7,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioHomeTest {
 
 
+    @Test
+    void shouldInitMax() {
+        RadioHome radio2 = new RadioHome(7);
+        assertEquals(6, radio2.getMaxRadioStationNumber());
+    }
+
+    @Test
+    void shouldInitMaxNoArgs() {
+        RadioHome radioHome = new RadioHome();
+        assertEquals(9, radioHome.getMaxRadioStationNumber());
+    }
+
 
     @Test
     void getCurrentRadioStationLessLowLimitTest() {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(-1);
-        int expected = 9;
+        int expected = radioHome.getMaxRadioStationNumber();
         int actual = radioHome.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
 
     @Test
-    void getCurrentRadioStationLowLimitTest() {
+    void getCurrentRadioStationLessLowLimitMaxArgConstTest () {
+        RadioHome radio2 = new RadioHome(20);
+        radio2.setCurrentRadioStation(-1);
+        int expected = radio2.getMaxRadioStationNumber();
+        int actual = radio2.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getCurrentRadioStationLowLimitTest () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(0);
         int expected = 0;
@@ -26,16 +47,26 @@ class RadioHomeTest {
         assertEquals(expected, actual);
     }
     @Test
-    void getCurrentRadioStationUpperLimitTest() {
+    void getCurrentRadioStationUpperLimitTest () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(9);
-        int expected = 9;
+        int expected = radioHome.getMaxRadioStationNumber();
         int actual = radioHome.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
 
     @Test
-    void getCurrentRadioStationMoreUpperLimitTest() {
+    void getCurrentRadioStationUpperLimitArgsConstTest () {
+        RadioHome radio2 = new RadioHome(21);
+        radio2.setCurrentRadioStation(20);
+        radio2.setNextRadioStation();
+        int expected = 0;
+        int actual = radio2.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getCurrentRadioStationMoreUpperLimitTest () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(10);
         int expected = 0;
@@ -44,7 +75,17 @@ class RadioHomeTest {
     }
 
     @Test
-    void setCurrentRadioStationLowLimitPlusOne() {
+    void getCurrentRadioStationMoreUpperLimitArgsConstTest () {
+        RadioHome radio2 = new RadioHome(20);
+        radio2.setCurrentRadioStation(20);
+        radio2.setNextRadioStation();
+        int expected = 1;
+        int actual = radio2.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setCurrentRadioStationLowLimitPlusOne () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(1);
         int expected = 1;
@@ -53,7 +94,7 @@ class RadioHomeTest {
     }
 
     @Test
-    void setPreviousCurrentRadioStation() {
+    void setPreviousCurrentRadioStation () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(5);
         radioHome.setPreviousCurrentRadioStation();
@@ -63,17 +104,27 @@ class RadioHomeTest {
     }
 
     @Test
-    void setPreviousCurrentRadioStationLowerLimit() {
+    void setPreviousCurrentRadioStationLowerLimit () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(0);
         radioHome.setPreviousCurrentRadioStation();
-        int expected = 9;
+        int expected = radioHome.getMaxRadioStationNumber();
         int actual = radioHome.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
 
     @Test
-    void setNextRadioStation() {
+    void setPreviousCurrentRadioStationLowerThenLimitArgsConstTest () {
+        RadioHome radio2 = new RadioHome(34);
+        radio2.setCurrentRadioStation(0);
+        radio2.setPreviousCurrentRadioStation();
+        int expected = radio2.getMaxRadioStationNumber();
+        int actual = radio2.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setNextRadioStation () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(5);
         radioHome.setNextRadioStation();
@@ -82,7 +133,7 @@ class RadioHomeTest {
         assertEquals(expected, actual);
     }
     @Test
-    void setNextRadioStationUpperLimit() {
+    void setNextRadioStationUpperLimit () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentRadioStation(9);
         radioHome.setNextRadioStation();
@@ -92,7 +143,17 @@ class RadioHomeTest {
     }
 
     @Test
-    void setCurrentVolume() {
+    void setNextRadioStationUpperLimitArgsConstTest () {
+        RadioHome radio2 = new RadioHome(64);
+        radio2.setCurrentRadioStation(63);
+        radio2.setNextRadioStation();
+        int expected = 0;
+        int actual = radio2.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setCurrentVolume () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentVolume(5);
         int expected = 5;
@@ -101,16 +162,16 @@ class RadioHomeTest {
     }
 
     @Test
-    void setCurrentVolumeUpperLimit() {
+    void setCurrentVolumeUpperLimit () {
         RadioHome radioHome = new RadioHome();
-        radioHome.setCurrentVolume(10);
-        int expected = 10;
+        radioHome.setCurrentVolume(100);
+        int expected = 100;
         int actual = radioHome.getCurrentVolume();
         assertEquals(expected, actual);
     }
 
     @Test
-    void setCurrentVolumeLowLimit() {
+    void setCurrentVolumeLowLimit () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentVolume(0);
         int expected = 0;
@@ -119,7 +180,7 @@ class RadioHomeTest {
     }
 
     @Test
-    void setVolumeDownLessLower() {
+    void setVolumeDownLessLower () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentVolume(0);
         radioHome.setVolumeDown();
@@ -129,7 +190,7 @@ class RadioHomeTest {
     }
 
     @Test
-    void setVolumeDownLowLimit() {
+    void setVolumeDownLowLimit () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentVolume(1);
         radioHome.setVolumeDown();
@@ -139,7 +200,7 @@ class RadioHomeTest {
     }
 
     @Test
-    void setVolumeUp() {
+    void setVolumeUp () {
         RadioHome radioHome = new RadioHome();
         radioHome.setCurrentVolume(5);
         radioHome.setVolumeUp();
@@ -149,21 +210,21 @@ class RadioHomeTest {
     }
 
     @Test
-    void setVolumeUpUpperLimit() {
+    void setVolumeUpUpperLimit () {
         RadioHome radioHome = new RadioHome();
-        radioHome.setCurrentVolume(9);
+        radioHome.setCurrentVolume(99);
         radioHome.setVolumeUp();
-        int expected = 10;
+        int expected = 100;
         int actual = radioHome.getCurrentVolume();
         assertEquals(expected, actual);
     }
 
     @Test
-    void setVolumeUpMoreLimit() {
+    void setVolumeUpMoreLimit () {
         RadioHome radioHome = new RadioHome();
-        radioHome.setCurrentVolume(10);
+        radioHome.setCurrentVolume(101);
         radioHome.setVolumeUp();
-        int expected = 10;
+        int expected = 1;
         int actual = radioHome.getCurrentVolume();
         assertEquals(expected, actual);
     }
