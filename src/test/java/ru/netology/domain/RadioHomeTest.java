@@ -7,12 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioHomeTest {
 
 
-
     @Test
     void shouldInitMax() {
         RadioHome radio2 = new RadioHome(7);
-        radio2.setMaxRadioStation(6);
-        assertEquals(5, radio2.getMaxRadioStationNumber());
+        assertEquals(6, radio2.getMaxRadioStationNumber());
     }
 
     @Test
@@ -60,9 +58,9 @@ class RadioHomeTest {
     @Test
     void getCurrentRadioStationUpperLimitArgsConstTest () {
         RadioHome radio2 = new RadioHome(21);
-        radio2.setMaxRadioStation(20);
-        int expected = 0;
+        radio2.setCurrentRadioStation(20);
         radio2.setNextRadioStation();
+        int expected = 0;
         int actual = radio2.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
@@ -80,7 +78,8 @@ class RadioHomeTest {
     void getCurrentRadioStationMoreUpperLimitArgsConstTest () {
         RadioHome radio2 = new RadioHome(20);
         radio2.setCurrentRadioStation(20);
-        int expected = 0;
+        radio2.setNextRadioStation();
+        int expected = 1;
         int actual = radio2.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
@@ -146,7 +145,7 @@ class RadioHomeTest {
     @Test
     void setNextRadioStationUpperLimitArgsConstTest () {
         RadioHome radio2 = new RadioHome(64);
-        radio2.setMaxRadioStation(65);
+        radio2.setCurrentRadioStation(63);
         radio2.setNextRadioStation();
         int expected = 0;
         int actual = radio2.getCurrentRadioStation();
